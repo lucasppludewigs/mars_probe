@@ -16,6 +16,6 @@ This repository has the code required by Elo7 for the recruiting process. You ca
 The code is not finished yet, and there are many improvements that will be done:
 * Remove #comments;
 * Remove verification prints;
-* Finish adapting the code to work with multiple probes (the code already works with 1 single probe);
-* Clean function `main`, create functions in the code and work with it properly;
+* Finish adapting the code to work with multiple probes (the code already works with 1 single probe); <OK>
+* Clean function `main`, create functions in the code and work with it properly; <OK>
 * Adapt the code to be an API.
