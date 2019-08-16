@@ -25,89 +25,75 @@ main_command_list = ['Commands:']
 #print(positions_list)
 #print(len(lines),'\n')
 while lin < len(lines):
-    print(lin)
     """Get probes positions."""
     position = lines[lin].split(' ')
+    position[0] = int(position[0])
+    position[1] = int(position[1])
     positions_list.extend(position)
-    print(positions_list)
     """Get probes commands."""
-    print('comm:',lines[lin+1])
     main_command_list.append(lines[lin+1])
-    print(main_command_list)
     lin = lin+2
 
+print('Input file:')
+print(positions_list)
+print(main_command_list)
 
-
-position = lines[1].split(' ')
-pos_x = int(position[0])
-pos_y = int(position[1])
-#print(pos_x,pos_x+1)
-"""Becoming the command."""
-command_list = list(lines[2])
-#print('\n')
-#print(lines[2],command_list)
-
-"""Executing commands."""
-print('\n')
-print('Position: {0}'.format(position))
-print('Commands: {0}'.format(command_list))
-
-for command in command_list:
-    print(command)
-    if command == 'M':
-        if position[2] == 'N':
-            pos_y = pos_y + 1
-            print('New pos: {0},{1},{2}'.format(pos_x,pos_y,position[2]))
-            if pos_y > max_y:
-                log.info('Your commands exceeds rectangle_size')
-                sys.exit()
-        elif position[2] == 'S':
-            pos_y = pos_y - 1
-            print('New pos: {0},{1},{2}'.format(pos_x,pos_y,position[2]))
-            if pos_y < 0:
-                log.info('Your commands exceeds rectangle_size')
-                sys.exit()
-        elif position[2] == 'E':
-            pos_x = pos_x + 1
-            print('New pos: {0},{1},{2}'.format(pos_x,pos_y,position[2]))
-            if pos_x > max_x:
-                log.info('Your commands exceeds rectangle_size')
-                sys.exit()
-        elif position[2] == 'W':
-            pos_x = pos_x - 1
-            print('New pos: {0},{1},{2}'.format(pos_x,pos_y,position[2]))
-            if pos_y < 0:
-                log.info('Your commands exceeds rectangle_size')
-                sys.exit()
+"""Executing commands with multiple robots."""
+c = 1
+while c < len(main_command_list):
+    command_list = list(main_command_list[c])
+    for command in command_list:
+        if command == 'M':
+            if positions_list[3*c] == 'N':
+                positions_list[(3*c)-1] = positions_list[(3*c)-1] + 1
+                if positions_list[(3*c)-1] > max_y:
+                    log.info('Your commands exceeds rectangle_size')
+                    sys.exit()
+            elif positions_list[3*c] == 'S':
+                positions_list[(3*c)-1] = positions_list[(3*c)-1] - 1
+                if positions_list[(3*c)-1] < 0:
+                    log.info('Your commands exceeds rectangle_size')
+                    sys.exit()
+            elif positions_list[3*c] == 'E':
+                positions_list[(3*c)-2] = positions_list[(3*c)-2] + 1
+                if positions_list[(3*c)-2] > max_x:
+                    log.info('Your commands exceeds rectangle_size')
+                    sys.exit()
+            elif positions_list[3*c] == 'W':
+                positions_list[(3*c)-2] = positions_list[(3*c)-2] - 1
+                if positions_list[(3*c)-1] < 0:
+                    log.info('Your commands exceeds rectangle_size')
+                    sys.exit()
+            else:
+                log.info('Something weird happened. Verify input.')
+        elif command == 'L':
+            if positions_list[3*c] == 'N':
+                positions_list[3*c] = 'W'
+            elif positions_list[3*c] == 'W':
+                positions_list[3*c] = 'S'
+            elif positions_list[3*c] == 'S':
+                positions_list[3*c] = 'E'
+            elif positions_list[3*c] == 'E':
+                positions_list[3*c] = 'N'
+            else:
+                log.info('Something weird happened. Verify input.')
+        elif command == 'R':
+            if positions_list[3*c] == 'N':
+                positions_list[3*c] = 'E'
+            elif positions_list[3*c] == 'E':
+                positions_list[3*c] = 'S'
+            elif positions_list[3*c] == 'S':
+                positions_list[3*c] = 'W'
+            elif positions_list[3*c] == 'W':
+                positions_list[3*c] = 'N'
+            else:
+                log.info('Something weird happened. Verify input.')
         else:
             log.info('Something weird happened. Verify input.')
-    elif command == 'L':
-        #print('yeah')
-        #print(position[2])
-        if position[2] == 'N':
-            position[2] = 'W'
-            #print('======New position: '+ position[2])
-        elif position[2] == 'W':
-            position[2] = 'S'
-        elif position[2] == 'S':
-            position[2] = 'E'
-        elif position[2] == 'E':
-            position[2] = 'N'
-        else:
-            log.info('Something weird happened. Verify input.')
-    elif command == 'R':
-        if position[2] == 'N':
-            position[2] = 'E'
-        elif position[2] == 'E':
-            position[2] = 'S'
-        elif position[2] == 'S':
-            position[2] = 'W'
-        elif position[2] == 'W':
-            position[2] = 'N'
-        else:
-            log.info('Something weird happened. Verify input.')
-    else:
-        log.info('Something weird happened. Verify input.')
+    c = c+1
+
+print('\nFinished executing commands.')
+print(positions_list)
 
 #print(position[6]) # verify input length
 
@@ -120,4 +106,3 @@ for line in lines:
 #log.info('Not a valid input')
 #log.info('Your commands exceeds rectangle_size')
 
-"""Data Output Construction"""
